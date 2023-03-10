@@ -1,0 +1,10 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: |
+      docker run -v $(System.DefaultWorkingDirectory)/src:/src opensecurity/njsscan:latest --json /src | tee -a '$(Build.ArtifactStagingDirectory)/njsscan-result.json'
+    displayName: "Run njsscan Container"

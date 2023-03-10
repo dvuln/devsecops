@@ -1,0 +1,12 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: |
+      docker run --rm -v $(Build.ArtifactStagingDirectory):/root/scout-report rossja/ncc-scoutsuite /root/scoutsuite/bin/scout aws --access-keys --access-key-id "$(accessKeyId)" --secret-access-key "$(secretAccessKey)" --no-browser --report-dir /root/scout-report
+
+      find $(Build.ArtifactStagingDirectory)/scoutsuite-results
+    displayName: "Run Scout"

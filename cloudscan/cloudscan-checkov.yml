@@ -1,0 +1,10 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: |
+      docker run --rm -t -v $(System.DefaultWorkingDirectory)/src:/src bridgecrew/checkov -d /src --output json --quiet --soft-fail | tee -a '$(Build.ArtifactStagingDirectory)/checkov-result.json'
+    displayName: "Run Checkov"

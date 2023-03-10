@@ -1,0 +1,14 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: |
+      git clone --depth=1 -b develop 'https://github.com/returntocorp/semgrep-rules.git' semgrep-rules
+    displayName: "Clone Rules"
+
+  - script: |
+      docker run --rm -v "$(System.DefaultWorkingDirectory)/src:/src" -v "$(System.DefaultWorkingDirectory)/semgrep-rules:/rules" -v "$(System.DefaultWorkingDirectory):/output" returntocorp/semgrep:latest --lang=java --config /rules/java --quiet --json /src | tee -a '$(Build.ArtifactStagingDirectory)/semgrep-result.json'
+    displayName: "Run Semgrep Container"
