@@ -1,0 +1,11 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: |
+      wget -q -O tmp.zip https://github.com/jeremylong/DependencyCheck/releases/download/v8.1.2/dependency-check-8.1.2-release.zip && unzip tmp.zip && rm tmp.zip
+      dependency-check/bin/dependency-check.sh --out ''$(Build.ArtifactStagingDirectory)/dependency-check-result.json'' --format JSON --scan $(System.DefaultWorkingDirectory)
+    displayName: "Run Dependency Check"
