@@ -6,6 +6,7 @@ pool:
 
 steps:
   - script: |
-      wget -q -O tmp.zip https://github.com/jeremylong/DependencyCheck/releases/download/v8.1.2/dependency-check-8.1.2-release.zip && unzip tmp.zip && rm tmp.zip
+      VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
+      curl -s "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip && unzip dependency-check.zip && rm dependency-check.zip
       dependency-check/bin/dependency-check.sh --out ''$(Build.ArtifactStagingDirectory)/dependency-check-result.json'' --format JSON --scan $(System.DefaultWorkingDirectory)
     displayName: "Run Dependency Check"
